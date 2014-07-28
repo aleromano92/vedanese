@@ -1,0 +1,73 @@
+doctype html
+html(lang="it")
+    head
+  
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(name='description', content='Vedanese, Mario Porta, Calcio, Vedano')
+        meta(name='author', content='Alessandro Romano')
+        
+        // HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
+        //if lt IE 9
+              script(src='#{pathToAssets}/assets/js/html5shiv.js')
+              script(src='#{pathToAssets}/assets/js/respond.min.js')
+
+        link(rel='shortcut icon', href= faviconUrl)
+        link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+        link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css')
+        link(rel='stylesheet', href='/carousel.css')
+        
+        title Vedanese Facebook Replica
+     
+        
+        body
+            //
+                Carousel
+            #myCarousel.carousel.slide
+                // Indicators
+                //- will not output within mar
+                //ol.carousel-indicators
+                    li.active(data-target='#myCarousel', data-slide-to='0')
+                    li(data-target='#myCarousel', data-slide-to='1')
+                    li(data-target='#myCarousel', data-slide-to='2')
+                .carousel-inner
+                    each photo, index in photos
+                        .item(title=photo.link, class= index === 0 ? 'active' : '') 
+                            img(src=photo.source, alt=photo.link, class='pics')
+            
+                a.left.carousel-control(href='#myCarousel', data-slide='prev')
+                    span.glyphicon.glyphicon-chevron-left
+                a.right.carousel-control(href='#myCarousel', data-slide='next')
+                    span.glyphicon.glyphicon-chevron-right
+                // /.carousel
+            //
+                Marketing messaging and featurettes
+
+            // Wrap the rest of the page in another container to center all the content.
+            .container.marketing
+                // START THE FEATURETTES
+                each post, i in posts
+                    .row.featurette
+                        .col-md-12
+                            h2.featurette-heading #{post.updated_time}                                                            
+                            p.lead= post.message || post.story  
+                    hr.featurette-divider
+
+                // FOOTER
+                footer
+                    p.pull-right
+                        a(href='#') Torna in cima
+                    p
+                        | © 2014 Vedanese Calcio ASD ·
+                        a(href='https://www.facebook.com/fcvedanese', target="_blank") Facebook
+                        | ·
+                        a(href="https://www.google.it/maps/place/45%C2%B046'20.3%22N+8%C2%B053'24.6%22E/"+
+                            "@45.7723034,8.890154,2992m/data=!3m2!1e3!4b1!4m2!3m1!1s0x0:0x0", target="_blank") Maps
+            // /.container
+        
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
+        script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+        script $(function(){ $('#myCarousel').carousel({
+            |   interval: 3500
+            |}); });
+
