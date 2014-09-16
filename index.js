@@ -1,48 +1,46 @@
 var FacebookPage = require('./facebook'),
-    instance = new FacebookPage('528326870602167'),
+    instance = new FacebookPage('528326870602167', '676001925817506', '41b08f470f656e1d9b8e269c19c44964', 'it_IT'),
     express = require('express'),
     app = express(),
-    fs = require('fs');
+    async = require('async');
 
 app.set('view engine', 'jade');
 
-app.use(express.static(__dirname + '/public')); // set the static files location /public/img will be /img for users
+app.use(express.static(__dirname + '/app')); // set the static files location /public/img will be /img for users
 
 instance.getProfilePicutre(function (err, favUrl) {
-    if (!err)
+    if (!err) {
         instance.favUrl = favUrl.data.url;
-    
-    app.listen(3000);
+        app.listen(80);
+    }
+
 });
 
-instance.getPublicPhotos(function (err, photos) {
-    instance.publicPhotos = photos.data;
-    
-//    console.log(photos.data);
-    
-    app.get('/', function (req, res, next) {
-        instance.getPublicPosts(function (err, jsonData) {
-            if (!err)
-                res.render('index', {
-                    faviconUrl: instance.favUrl,
-                    photos: instance.publicPhotos,
-                    posts: jsonData.data
+app.get('/', function (req, res, next) {
+
+    async.parallel({
+            photos: function (callback) {
+                instance.getCoverPhotos(function (err, photos) {
+                    if (!err)
+                        callback(null, photos);
                 });
+            },
+            posts: function (callback) {
+                instance.getPublicPosts(function (err, posts) {
+                    if (!err)
+                        callback(null, posts);
+
+                });
+            }
+        },
+        function (err, results) {
+            if (err) return console.error(err);
+            res.render('index', {
+                faviconUrl: instance.favUrl,
+                photos: results.photos.data,
+                posts: results.posts.data
+            });
             next();
         });
-    });
+
 });
-
-
-//app.get('/', function (req, res, next) {
-//    instance.getPublicPosts(function (err, jsonData) {
-//        if (!err)
-//            res.render('index', {
-//                faviconUrl: instance.favUrl,
-//                photos: instance.publicPhotos,
-//                posts: jsonData.data
-//            });
-//        next();
-//    });
-//});
-

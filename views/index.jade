@@ -15,9 +15,9 @@ html(lang="it")
         link(rel='shortcut icon', href= faviconUrl)
         link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
         link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css')
-        link(rel='stylesheet', href='/carousel.css')
+        link(rel='stylesheet', href='/styles/carousel.css')
         
-        title Vedanese Facebook Replica
+        title Vedanese A.S.D.
      
         
         body
@@ -47,11 +47,14 @@ html(lang="it")
             .container.marketing
                 // START THE FEATURETTES
                 each post, i in posts
-                    .row.featurette
-                        .col-md-12
-                            h2.featurette-heading #{post.updated_time}                                                            
-                            p.lead= post.message || post.story  
-                    hr.featurette-divider
+                    if post.type === 'status'
+                        .row.featurette
+                            .col-md-12
+                                if post.picture 
+                                    img(class="featurette-image pull-left", src="#{post.picture}")
+                                h2.featurette-heading #{post.updated_time}                                                            
+                                p.lead= post.message || post.story  
+                        hr.featurette-divider
 
                 // FOOTER
                 footer
@@ -63,6 +66,12 @@ html(lang="it")
                         | ·
                         a(href="https://www.google.it/maps/place/45%C2%B046'20.3%22N+8%C2%B053'24.6%22E/"+
                             "@45.7723034,8.890154,2992m/data=!3m2!1e3!4b1!4m2!3m1!1s0x0:0x0", target="_blank") Maps
+                    p.pull-right
+                        a(href='https://www.facebook.com/nicholasdaikorovagliviellophotographer', target="_blank") Collaborazione fotografica: Nicholas Vagliviello
+                    p
+                        | © 2014 Sito realizzato da Alessandro Romano ·
+                        a(href='http://it.linkedin.com/in/alessandroromano92', target="_blank") LinkedIn
+
             // /.container
         
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
